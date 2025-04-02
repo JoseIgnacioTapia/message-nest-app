@@ -4,8 +4,8 @@ export class MessagesRepository {
   async findOne(id: string) {
     try {
       // Leer el archivo messages.json
-      const contents = readFile('messages.json', 'utf8');
-      const messages = JSON.parse(await contents);
+      const contents = await readFile('messages.json', 'utf8');
+      const messages = JSON.parse(contents);
 
       // Devolver el mensaje correspondiente al ID
       return messages[id];
@@ -15,7 +15,21 @@ export class MessagesRepository {
     }
   }
 
-  //   async findAll() {}
+  async findAll() {
+    const contents = await readFile('messages.json', 'utf8');
+    const messages = JSON.parse(contents);
 
-  //   async create(message: string) {}
+    return messages;
+  }
+
+  async create(content: string) {
+    const contents = await readFile('messages.json', 'utf8');
+    const messages = JSON.parse(contents);
+
+    const id = Math.floor(Math.random() * 999);
+
+    messages[id] = { id, content };
+
+    await writeFile('messages.json', JSON.stringify(messages));
+  }
 }
